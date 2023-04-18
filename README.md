@@ -32,7 +32,7 @@ Segue um exemplo com os parâmetros preenchidos no CMD:
 
 	python .\cache_simulator.py 256 4 1 R 0 Endereços/bin_100.bin
 
-Caso deseje executar no Replit, siga as instruções abaixo:
+## Caso deseje executar no Replit, siga as instruções abaixo:
 
 No Replit, abra o shell e preencha o seguinte comando:
 
