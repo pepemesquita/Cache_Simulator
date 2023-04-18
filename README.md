@@ -12,9 +12,9 @@ Caso não queira instalar o Python em sua máquina podes optar por rodar o simul
 
 1 - Baixe o arquivo .zip e extraia-o.
 
-2 - Abra o CMD e navegue até o diretório onde você extraiu o arquivo .zip, por exemplo.
+2 - Abra o CMD e navegue até o diretório onde você extraiu o arquivo .zip e navegue até a pasta, por exemplo.
 
-	cd "C:\Users\your_username\Downloads\20200862"
+	cd "C:\Users\your_username\Downloads\cache_simulator-master"
 
 3 - No diretório aberto, execute o seguinte comando para criar a cache:
 
