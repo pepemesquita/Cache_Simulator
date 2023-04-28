@@ -1,5 +1,4 @@
 import sys
-import struct
 import math
 import random
 
@@ -24,10 +23,8 @@ def main():
     print(f'flag = {flag}')
     print(f'arquivo = {file}')
 
-    cache_val = [0] * (nsets * assoc)
     n_bits_offset = int(math.log(bsize, 2))
     n_bits_indice = int(math.log(nsets, 2))
-    n_bits_tag = 32 - n_bits_offset - n_bits_indice
 
     access, miss_comp, hit, miss_capacidade, miss_conflito = 0, 0, 0, 0, 0
     ver_capacidade, misses_totais = 0, 0
@@ -42,7 +39,7 @@ def main():
             if not buffer:
                 break
 
-            endereco = struct.unpack(">i", buffer)[0]
+            endereco = int.from_bytes(buffer, byteorder='big')
             tag = endereco >> (n_bits_offset + n_bits_indice)
             n_bloco = endereco // bsize
             idx = n_bloco % nsets
@@ -52,8 +49,8 @@ def main():
                 misses_totais += 1
                 cache_tag[idx][0][0] = tag
                 cache_tag[idx][0][1] = 1
-            else:
 
+            else:
                 miss_ocorrido = False
 
                 for i in range(assoc):
@@ -78,12 +75,12 @@ def main():
                     cache_tag[idx][r][0] = tag
                     cache_tag[idx][r][1] = 1
 
+                    if ver_capacidade < nsets * assoc:
+                        ver_capacidade += 1
+
                     if ver_capacidade == nsets * assoc:
                         miss_capacidade += 1
                         misses_totais += 1
-
-                    if ver_capacidade < nsets * assoc:
-                        ver_capacidade += 1
 
                     else:
                         miss_conflito += 1
@@ -94,20 +91,20 @@ def main():
     taxa_hit = hit / access
     taxa_misses = misses_totais / access
     taxa_compulsorio = miss_comp / misses_totais
-    taxa_conflito = miss_conflito / misses_totais
     taxa_capacidade = miss_capacidade / misses_totais
+    taxa_conflito = miss_conflito / misses_totais
 
     if flag == 0:
         print(f'Total de Acessos: {access}')
         print(f'Taxa de Hit: {taxa_hit: .1%}')
-        print(f'Taxa de Miss: {taxa_misses / access:.1%}')
-        print(f'Taxa de Misses de Conflito: {taxa_conflito:.1%}')
+        print(f'Taxa de Miss: {taxa_misses:.1%}')
         print(f'Taxa de Misses Compulsórios: {taxa_compulsorio:.1%}')
         print(f'Taxa de Misses Capacidade: {taxa_capacidade:.1%}')
+        print(f'Taxa de Misses de Conflito: {taxa_conflito:.1%}')
 
     else:
-        print(access, round(taxa_hit, 4), round(taxa_misses, 4), round(taxa_conflito, 2),
-              round(taxa_compulsorio, 2), round(taxa_capacidade, 2))
+        print(access, round(taxa_hit, 4), round(taxa_misses, 4), round(taxa_compulsorio, 2), round(taxa_capacidade, 2),
+              round(taxa_conflito, 2))
 
 
 if __name__ == '__main__':
